@@ -58,3 +58,8 @@ class ProduitDetailView(APIView):
         produit = self.get_object(pk)
         produit.delete()
         return Response({"message": "Produit supprimé avec succès."}, status=status.HTTP_204_NO_CONTENT)
+class ProduitParCategorieView(APIView):
+    def get(self, request, categorie_id):
+        produits = Produit.objects.filter(categorie_id=categorie_id)
+        serializer = ProduitSerializer(produits, many=True, context={'request': request})
+        return Response(serializer.data)
